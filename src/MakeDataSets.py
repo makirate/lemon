@@ -90,15 +90,15 @@ class CropLemon(ImageOnlyTransform):
 img_dir = '/datas'
 train_test_dir = ['/train_images','/test_images']
 transform_lemons = '/transform_lemons'
-place_lemon = os.path.dirname(__file__).rstrip('/src')
+lemon_place = os.path.dirname(__file__).rstrip('/src')
 
 
 def make_dataset():
     for i in train_test_dir:
-        files = glob.glob(place_lemon + img_dir + i +'/*.jpg')
-        if os.path.isdir(place_lemon + img_dir + transform_lemons + i) is False:
+        files = glob.glob(lemon_place + img_dir + i +'/*.jpg')
+        if os.path.isdir(lemon_place + img_dir + transform_lemons + i) is False:
             print('hello')
-            os.makedirs(place_lemon + img_dir + transform_lemons + i)
+            os.makedirs(lemon_place + img_dir + transform_lemons + i)
 
 
         for j in files:
@@ -106,34 +106,16 @@ def make_dataset():
             crop_img = CropLemon()(image=img)['image']
             index = '/' + j[-8:]
             
-            cv2.imwrite(place_lemon + img_dir + transform_lemons + i + index,crop_img)
+            cv2.imwrite(lemon_place + img_dir + transform_lemons + i + index,crop_img)
             
 
 if __name__ == '__main__':
     
-    files = glob.glob(place_lemon + '/datas/train_images/*.jpg')
+    files = glob.glob(lemon_place + '/datas/train_images/*.jpg')
     img = cv2.imread(files[0])
     print(len(files))
-    if os.path.isdir(place_lemon + img_dir + transform_lemons + '/train_images') is False:
-        os.makedirs(place_lemon + img_dir + transform_lemons + '/train_images')
+    if os.path.isdir(lemon_place + img_dir + transform_lemons + '/train_images') is False:
+        os.makedirs(lemon_place + img_dir + transform_lemons + '/train_images')
 
-
-    #img = cv2.imread(place_lemon+'/datas/train_images/')
-    cv2.imwrite(place_lemon+"/src/test_img.png",img)
-    """
-    for i in train_test_dir:
-        for j in files:
-            img = cv2.imread(place_lemon + img_dir + i + j)
-            cv2.imwrite("test_img",img)
-    """
-
-    """
-    for i in train_test_dir:
-        files = glob.glob(img_dir + i +'/*.jpg')
-        print(len(files))
-        for j in files:
-            img = cv2.imread(img_dir + i + j)
-            crop_img = CropLemon()(image=img)['image']
-            cv2.imwrite("altY.png",crop_img)
-            break
-    """
+    cv2.imwrite(lemon_place + "/src/test_img.png",img)
+ 
