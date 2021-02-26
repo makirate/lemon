@@ -36,13 +36,14 @@ class rt():
             image_size = 600 
             img = center_crop_and_resize(img, image_size=image_size)
             img = preprocess_input(img)
-            img = np.expand_dims(img, 0)
+            #img = np.expand_dims(img, 0)
             img_list.append(img)
         return np.array(img_list)
 
     def run_train(self):
         img_list = self.get_imgs()
         label_list = self.get_labels()
+        label_list = keras.utils.to_categorical(label_list)
         lemon_place = self.lemon_place
         #train_img,train_label,test_img,test_label = train_test_split(img_list,label_list)
 
