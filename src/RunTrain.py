@@ -15,7 +15,8 @@ class rt():
     def __init__(self):
         self.lemon_place = os.path.dirname(__file__).rstrip('/src')
         self.train_images_place = self.lemon_place + "/datas/transform_lemons/train_images"
-        self.file_sum = len(glob.glob(self.train_images_place))
+        DIR = self.train_images_place
+        self.file_sum = sum(os.path.isfile(os.path.join(DIR, name)) for name in os.listdir(DIR))
 
 
     def get_labels(self):
@@ -42,18 +43,21 @@ class rt():
     def run_train(self):
         img_list = self.get_imgs()
         label_list = self.get_labels()
+        lemon_place = self.lemon_place
         #train_img,train_label,test_img,test_label = train_test_split(img_list,label_list)
 
         base_model = tf.keras.applications.EfficientNetB7(input_shape=(600,600,3), weights='imagenet', include_top=False)
-        x = keras.layers.GlobalAveragePooling2D()(base_model.output)
-        output = keras.layers.Dense(4, activation='softmax')(x)
-        model = keras.models.Model(inputs=[base_model.input], outputs=[output]) 
+        x = tf.keras.layers.GlobalAveragePooling2D()(base_model.output)
+        output = tf.keras.layers.Dense(4, activation='softmax')(x)
+        model = tf.keras.models.Model(inputs=[base_model.input], outputs=[output]) 
         model.compile(optimizer='SGD', loss='categorical_crossentropy', metrics=['accuracy'])
-        model.fit(x=img_list,y=label_list,epochs=20,validation_split=0.2)
+        model.fit(img_list,label_list,epochs=20,validation_split=0.2)
         model.save(lemon_place+'/fine_model.h5')
 
 
 if __name__ == "__main__":
     a = rt().get_imgs()
-    d = rt().get_labels()
+    b = rt().get_labels()
+    print(np.shape(a))
+    print(np.shape(b))
     #model.fit(X_train_processed, y_train_categorical)
