@@ -4,7 +4,7 @@ import glob
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
-import tensorflow-gpu as tf #gpu
+import tensorflow as tf #gpu 
 import keras
 import os 
 import glob
