@@ -4,7 +4,7 @@ import glob
 import cv2
 import numpy as np
 from sklearn.model_selection import train_test_split
-import tensorflow as tf
+import tensorflow-gpu as tf #gpu
 import keras
 import os 
 import glob
@@ -47,6 +47,7 @@ class rt():
         lemon_place = self.lemon_place
         #train_img,train_label,test_img,test_label = train_test_split(img_list,label_list)
 
+        tf.random.set_seed(0)
         base_model = tf.keras.applications.EfficientNetB7(input_shape=(600,600,3), weights='imagenet', include_top=False)
         x = tf.keras.layers.GlobalAveragePooling2D()(base_model.output)
         output = tf.keras.layers.Dense(4, activation='softmax')(x)
